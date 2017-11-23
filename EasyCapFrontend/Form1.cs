@@ -91,6 +91,9 @@ namespace EasyCapFrontend {
 
         private async void btnStart_Click(object sender, EventArgs e) {
             Enabled = false;
+            progressBar1.Value = 0;
+            progressBar1.Visible = true;
+            textBox1.Clear();
 
             try {
                 DateTime startTime = DateTime.Today + dtStartTime.Value.TimeOfDay;
@@ -103,6 +106,9 @@ namespace EasyCapFrontend {
                 }
                 string filepath = Path.Combine(txtOutputDir.Text, filename);
 
+                decimal seconds = numDuration.Value * 60;
+                progressBar1.Maximum = (int)seconds;
+
                 string audio = ddlAudio.SelectedItem?.ToString();
                 string video = ddlVideo.SelectedItem?.ToString();
                 if (audio == null || video == null) {
@@ -110,12 +116,13 @@ namespace EasyCapFrontend {
                 } else {
                     var psi2 = new ProcessStartInfo(
                         lblFfmpegPath2.Text,
-                        $"-t {numDuration.Value * 60} -f dshow -video_size 720x240 -framerate 30 " +
+                        $"-t {seconds} -f dshow -framerate 30 -video_size 720x240 " +
                         $"-pixel_format yuyv422 -i video=\"{video}\":audio=\"{audio}\" " +
                         $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
                         $"\"{filepath}\""
                     ) {
                         UseShellExecute = false,
+                        CreateNoWindow = true,
                         RedirectStandardError = true
                     };
 
@@ -130,7 +137,14 @@ namespace EasyCapFrontend {
                     using (var sr = p2.StandardError) {
                         string line;
                         while ((line = await sr.ReadLineAsync()) != null) {
-                            Console.Error.WriteLine(line);
+                            if (line.Contains("time=")) {
+                                string time = line.Substring(line.IndexOf("time=") + 5, 11);
+                                if (TimeSpan.TryParse(time, out TimeSpan result)) {
+                                    progressBar1.Value = (int)result.TotalSeconds;
+                                }
+                            } else {
+                                textBox1.AppendText(line + Environment.NewLine);
+                            }
                         }
                     }
                     p2.WaitForExit();
@@ -141,6 +155,7 @@ namespace EasyCapFrontend {
             }
 
             Enabled = true;
+            progressBar1.Visible = false;
         }
     }
 }

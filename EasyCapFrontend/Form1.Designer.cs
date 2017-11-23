@@ -49,6 +49,8 @@
             this.ddlVideo = new System.Windows.Forms.ComboBox();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -60,7 +62,7 @@
             // lblStartTime
             // 
             this.lblStartTime.AutoSize = true;
-            this.lblStartTime.Location = new System.Drawing.Point(6, 19);
+            this.lblStartTime.Location = new System.Drawing.Point(6, 22);
             this.lblStartTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(54, 13);
@@ -70,7 +72,7 @@
             // chkImmediate
             // 
             this.chkImmediate.AutoSize = true;
-            this.chkImmediate.Location = new System.Drawing.Point(66, 18);
+            this.chkImmediate.Location = new System.Drawing.Point(66, 21);
             this.chkImmediate.Name = "chkImmediate";
             this.chkImmediate.Size = new System.Drawing.Size(79, 17);
             this.chkImmediate.TabIndex = 3;
@@ -82,16 +84,16 @@
             // 
             this.dtStartTime.CustomFormat = "";
             this.dtStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtStartTime.Location = new System.Drawing.Point(66, 41);
+            this.dtStartTime.Location = new System.Drawing.Point(151, 19);
             this.dtStartTime.Name = "dtStartTime";
             this.dtStartTime.ShowUpDown = true;
-            this.dtStartTime.Size = new System.Drawing.Size(100, 20);
+            this.dtStartTime.Size = new System.Drawing.Size(103, 20);
             this.dtStartTime.TabIndex = 4;
             // 
             // lblDuration
             // 
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(6, 69);
+            this.lblDuration.Location = new System.Drawing.Point(6, 49);
             this.lblDuration.Margin = new System.Windows.Forms.Padding(3);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(50, 13);
@@ -101,7 +103,7 @@
             // numDuration
             // 
             this.numDuration.DecimalPlaces = 3;
-            this.numDuration.Location = new System.Drawing.Point(66, 67);
+            this.numDuration.Location = new System.Drawing.Point(66, 47);
             this.numDuration.Name = "numDuration";
             this.numDuration.Size = new System.Drawing.Size(60, 20);
             this.numDuration.TabIndex = 6;
@@ -109,8 +111,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.lblStartTime);
             this.groupBox1.Controls.Add(this.numDuration);
@@ -119,7 +119,7 @@
             this.groupBox1.Controls.Add(this.dtStartTime);
             this.groupBox1.Location = new System.Drawing.Point(12, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 93);
+            this.groupBox1.Size = new System.Drawing.Size(260, 73);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
@@ -127,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(132, 69);
+            this.label1.Location = new System.Drawing.Point(132, 49);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
@@ -136,15 +136,13 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.ddlTune);
             this.groupBox3.Controls.Add(this.lblTune);
             this.groupBox3.Controls.Add(this.ddlPreset);
             this.groupBox3.Controls.Add(this.lblPreset);
             this.groupBox3.Controls.Add(this.numCrf);
             this.groupBox3.Controls.Add(this.lblCRF);
-            this.groupBox3.Location = new System.Drawing.Point(12, 124);
+            this.groupBox3.Location = new System.Drawing.Point(12, 102);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(260, 73);
             this.groupBox3.TabIndex = 2;
@@ -234,7 +232,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(197, 359);
+            this.btnStart.Location = new System.Drawing.Point(463, 276);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 5;
@@ -249,7 +247,7 @@
             this.lblFfmpegPath2.AutoEllipsis = true;
             this.lblFfmpegPath2.Location = new System.Drawing.Point(12, 9);
             this.lblFfmpegPath2.Name = "lblFfmpegPath2";
-            this.lblFfmpegPath2.Size = new System.Drawing.Size(260, 13);
+            this.lblFfmpegPath2.Size = new System.Drawing.Size(526, 13);
             this.lblFfmpegPath2.TabIndex = 0;
             this.lblFfmpegPath2.Text = "not found";
             this.lblFfmpegPath2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -262,7 +260,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txtOutputDir);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(12, 282);
+            this.groupBox2.Location = new System.Drawing.Point(278, 104);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(260, 71);
             this.groupBox2.TabIndex = 4;
@@ -271,6 +269,8 @@
             // 
             // txtFilename
             // 
+            this.txtFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilename.Location = new System.Drawing.Point(64, 45);
             this.txtFilename.Name = "txtFilename";
             this.txtFilename.Size = new System.Drawing.Size(190, 20);
@@ -287,6 +287,8 @@
             // 
             // txtOutputDir
             // 
+            this.txtOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOutputDir.Location = new System.Drawing.Point(64, 19);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(190, 20);
@@ -303,11 +305,13 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.ddlAudio);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.ddlVideo);
             this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Location = new System.Drawing.Point(12, 203);
+            this.groupBox4.Location = new System.Drawing.Point(278, 25);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(260, 73);
             this.groupBox4.TabIndex = 3;
@@ -325,6 +329,8 @@
             // 
             // ddlVideo
             // 
+            this.ddlVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlVideo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlVideo.FormattingEnabled = true;
             this.ddlVideo.Location = new System.Drawing.Point(49, 19);
@@ -334,6 +340,8 @@
             // 
             // ddlAudio
             // 
+            this.ddlAudio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ddlAudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlAudio.FormattingEnabled = true;
             this.ddlAudio.Location = new System.Drawing.Point(49, 46);
@@ -350,11 +358,34 @@
             this.label5.TabIndex = 2;
             this.label5.Text = "Audio:";
             // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(12, 181);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(526, 89);
+            this.textBox1.TabIndex = 6;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 276);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(445, 23);
+            this.progressBar1.TabIndex = 7;
+            this.progressBar1.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 394);
+            this.ClientSize = new System.Drawing.Size(550, 311);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.lblFfmpegPath2);
@@ -374,6 +405,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -404,6 +436,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ddlVideo;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
