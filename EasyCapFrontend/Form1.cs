@@ -39,6 +39,7 @@ namespace EasyCapFrontend {
                 }
             }
 
+            ddlVideo.SelectedIndexChanged += (o, e) => FillFormats();
             FillDevices();
         }
 
@@ -46,13 +47,14 @@ namespace EasyCapFrontend {
             try {
                 var psi1 = new ProcessStartInfo(lblFfmpegPath2.Text, $"-f dshow -list_devices true -i dummy") {
                     UseShellExecute = false,
-                    RedirectStandardError = true
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
                 };
                 var p1 = Process.Start(psi1);
                 using (var sr = p1.StandardError) {
                     string line;
                     string mode = null;
-                    while ((line = sr.ReadLine()) != null) {
+                    while ((line = await sr.ReadLineAsync()) != null) {
                         if (line.Contains("DirectShow video devices")) {
                             mode = "video";
                         } else if (line.Contains("DirectShow audio devices")) {
@@ -74,6 +76,30 @@ namespace EasyCapFrontend {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+                p1.WaitForExit();
+            } catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine(e.StackTrace);
+                MessageBox.Show(this, e.Message, e.GetType().Name);
+            }
+        }
+
+        private async void FillFormats() {
+            try {
+                var psi1 = new ProcessStartInfo(lblFfmpegPath2.Text, $"-f dshow -list_options true -i video=\"{ddlVideo.SelectedItem}\"") {
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+                var p1 = Process.Start(psi1);
+                using (var sr = p1.StandardError) {
+                    string line;
+                    while ((line = await sr.ReadLineAsync()) != null) {
+                        if (DirectShowOptions.TryParse(line, out DirectShowOptions o)) {
+                            Console.WriteLine(o);
                         }
                     }
                 }
