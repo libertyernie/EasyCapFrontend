@@ -29,26 +29,32 @@
             this.lblDuration = new System.Windows.Forms.Label();
             this.numDuration = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblCRF = new System.Windows.Forms.Label();
-            this.numCrf = new System.Windows.Forms.NumericUpDown();
-            this.lblPreset = new System.Windows.Forms.Label();
-            this.ddlPreset = new System.Windows.Forms.ComboBox();
-            this.lblTune = new System.Windows.Forms.Label();
             this.ddlTune = new System.Windows.Forms.ComboBox();
+            this.lblTune = new System.Windows.Forms.Label();
+            this.ddlPreset = new System.Windows.Forms.ComboBox();
+            this.lblPreset = new System.Windows.Forms.Label();
+            this.numCrf = new System.Windows.Forms.NumericUpDown();
+            this.lblCRF = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.lblFfmpegPath2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtOutputDir = new System.Windows.Forms.TextBox();
             this.txtFilename = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtOutputDir = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.ddlVideo = new System.Windows.Forms.ComboBox();
+            this.ddlAudio = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCrf)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblStartTime
@@ -118,6 +124,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(132, 69);
+            this.label1.Margin = new System.Windows.Forms.Padding(3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "minutes";
+            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -135,40 +151,31 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Encoding";
             // 
-            // lblCRF
+            // ddlTune
             // 
-            this.lblCRF.AutoSize = true;
-            this.lblCRF.Location = new System.Drawing.Point(6, 22);
-            this.lblCRF.Name = "lblCRF";
-            this.lblCRF.Size = new System.Drawing.Size(31, 13);
-            this.lblCRF.TabIndex = 0;
-            this.lblCRF.Text = "CRF:";
+            this.ddlTune.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlTune.FormattingEnabled = true;
+            this.ddlTune.Items.AddRange(new object[] {
+            "",
+            "film",
+            "animation",
+            "grain",
+            "stillimage",
+            "fastdecode",
+            "zerolatency"});
+            this.ddlTune.Location = new System.Drawing.Point(93, 46);
+            this.ddlTune.Name = "ddlTune";
+            this.ddlTune.Size = new System.Drawing.Size(161, 21);
+            this.ddlTune.TabIndex = 5;
             // 
-            // numCrf
+            // lblTune
             // 
-            this.numCrf.Location = new System.Drawing.Point(43, 19);
-            this.numCrf.Maximum = new decimal(new int[] {
-            51,
-            0,
-            0,
-            0});
-            this.numCrf.Name = "numCrf";
-            this.numCrf.Size = new System.Drawing.Size(60, 20);
-            this.numCrf.TabIndex = 1;
-            this.numCrf.Value = new decimal(new int[] {
-            24,
-            0,
-            0,
-            0});
-            // 
-            // lblPreset
-            // 
-            this.lblPreset.AutoSize = true;
-            this.lblPreset.Location = new System.Drawing.Point(109, 22);
-            this.lblPreset.Name = "lblPreset";
-            this.lblPreset.Size = new System.Drawing.Size(40, 13);
-            this.lblPreset.TabIndex = 2;
-            this.lblPreset.Text = "Preset:";
+            this.lblTune.AutoSize = true;
+            this.lblTune.Location = new System.Drawing.Point(6, 49);
+            this.lblTune.Name = "lblTune";
+            this.lblTune.Size = new System.Drawing.Size(81, 13);
+            this.lblTune.TabIndex = 4;
+            this.lblTune.Text = "Tune (optional):";
             // 
             // ddlPreset
             // 
@@ -189,39 +196,48 @@
             this.ddlPreset.Size = new System.Drawing.Size(100, 21);
             this.ddlPreset.TabIndex = 3;
             // 
-            // lblTune
+            // lblPreset
             // 
-            this.lblTune.AutoSize = true;
-            this.lblTune.Location = new System.Drawing.Point(6, 49);
-            this.lblTune.Name = "lblTune";
-            this.lblTune.Size = new System.Drawing.Size(81, 13);
-            this.lblTune.TabIndex = 4;
-            this.lblTune.Text = "Tune (optional):";
+            this.lblPreset.AutoSize = true;
+            this.lblPreset.Location = new System.Drawing.Point(109, 22);
+            this.lblPreset.Name = "lblPreset";
+            this.lblPreset.Size = new System.Drawing.Size(40, 13);
+            this.lblPreset.TabIndex = 2;
+            this.lblPreset.Text = "Preset:";
             // 
-            // ddlTune
+            // numCrf
             // 
-            this.ddlTune.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlTune.FormattingEnabled = true;
-            this.ddlTune.Items.AddRange(new object[] {
-            "",
-            "film",
-            "animation",
-            "grain",
-            "stillimage",
-            "fastdecode",
-            "zerolatency"});
-            this.ddlTune.Location = new System.Drawing.Point(93, 46);
-            this.ddlTune.Name = "ddlTune";
-            this.ddlTune.Size = new System.Drawing.Size(161, 21);
-            this.ddlTune.TabIndex = 5;
+            this.numCrf.Location = new System.Drawing.Point(43, 19);
+            this.numCrf.Maximum = new decimal(new int[] {
+            51,
+            0,
+            0,
+            0});
+            this.numCrf.Name = "numCrf";
+            this.numCrf.Size = new System.Drawing.Size(60, 20);
+            this.numCrf.TabIndex = 1;
+            this.numCrf.Value = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+            // 
+            // lblCRF
+            // 
+            this.lblCRF.AutoSize = true;
+            this.lblCRF.Location = new System.Drawing.Point(6, 22);
+            this.lblCRF.Name = "lblCRF";
+            this.lblCRF.Size = new System.Drawing.Size(31, 13);
+            this.lblCRF.TabIndex = 0;
+            this.lblCRF.Text = "CRF:";
             // 
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(197, 286);
+            this.btnStart.Location = new System.Drawing.Point(197, 359);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 3;
+            this.btnStart.TabIndex = 5;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -238,16 +254,6 @@
             this.lblFfmpegPath2.Text = "not found";
             this.lblFfmpegPath2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(132, 69);
-            this.label1.Margin = new System.Windows.Forms.Padding(3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "minutes";
-            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -256,28 +262,12 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txtOutputDir);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(12, 203);
+            this.groupBox2.Location = new System.Drawing.Point(12, 282);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(260, 71);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Output";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Directory:";
-            // 
-            // txtOutputDir
-            // 
-            this.txtOutputDir.Location = new System.Drawing.Point(64, 19);
-            this.txtOutputDir.Name = "txtOutputDir";
-            this.txtOutputDir.Size = new System.Drawing.Size(190, 20);
-            this.txtOutputDir.TabIndex = 1;
             // 
             // txtFilename
             // 
@@ -295,11 +285,77 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Filename:";
             // 
+            // txtOutputDir
+            // 
+            this.txtOutputDir.Location = new System.Drawing.Point(64, 19);
+            this.txtOutputDir.Name = "txtOutputDir";
+            this.txtOutputDir.Size = new System.Drawing.Size(190, 20);
+            this.txtOutputDir.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 22);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Directory:";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.ddlAudio);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.ddlVideo);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Location = new System.Drawing.Point(12, 203);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(260, 73);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Input";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Video:";
+            // 
+            // ddlVideo
+            // 
+            this.ddlVideo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlVideo.FormattingEnabled = true;
+            this.ddlVideo.Location = new System.Drawing.Point(49, 19);
+            this.ddlVideo.Name = "ddlVideo";
+            this.ddlVideo.Size = new System.Drawing.Size(205, 21);
+            this.ddlVideo.TabIndex = 1;
+            // 
+            // ddlAudio
+            // 
+            this.ddlAudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlAudio.FormattingEnabled = true;
+            this.ddlAudio.Location = new System.Drawing.Point(49, 46);
+            this.ddlAudio.Name = "ddlAudio";
+            this.ddlAudio.Size = new System.Drawing.Size(205, 21);
+            this.ddlAudio.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(37, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Audio:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 321);
+            this.ClientSize = new System.Drawing.Size(284, 394);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.lblFfmpegPath2);
             this.Controls.Add(this.btnStart);
@@ -315,6 +371,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCrf)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -341,6 +399,11 @@
         private System.Windows.Forms.TextBox txtOutputDir;
         private System.Windows.Forms.TextBox txtFilename;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox ddlAudio;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox ddlVideo;
+        private System.Windows.Forms.Label label4;
     }
 }
 

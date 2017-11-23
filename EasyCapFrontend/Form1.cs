@@ -36,7 +36,52 @@ namespace EasyCapFrontend {
                     lblFfmpegPath2.Text = f;
                     Enabled = true;
                     break;
-                }   
+                }
+            }
+
+            FillDevices();
+        }
+
+        private async void FillDevices() {
+            try {
+                var psi1 = new ProcessStartInfo(lblFfmpegPath2.Text, $"-f dshow -list_devices true -i dummy") {
+                    UseShellExecute = false,
+                    RedirectStandardError = true
+                };
+                var p1 = Process.Start(psi1);
+                using (var sr = p1.StandardError) {
+                    string line;
+                    string mode = null;
+                    while ((line = sr.ReadLine()) != null) {
+                        if (line.Contains("DirectShow video devices")) {
+                            mode = "video";
+                        } else if (line.Contains("DirectShow audio devices")) {
+                            mode = "audio";
+                        } else if (mode != null && line.Where(c => c == '"').Count() >= 2) {
+                            line = line.Substring(line.IndexOf('"') + 1);
+                            line = line.Substring(0, line.LastIndexOf('"'));
+                            if (line.Length > 0) {
+                                if (mode == "audio") {
+                                    ddlAudio.Items.Add(line);
+                                    if (line.Contains("USB Audio Device")) {
+                                        ddlAudio.SelectedIndex = ddlAudio.Items.Count - 1;
+                                    }
+                                }
+                                if (mode == "video") {
+                                    ddlVideo.Items.Add(line);
+                                    if (line.Contains("USB Video Device")) {
+                                        ddlVideo.SelectedIndex = ddlAudio.Items.Count - 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                p1.WaitForExit();
+            } catch (Exception e) {
+                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine(e.StackTrace);
+                MessageBox.Show(this, e.Message, e.GetType().Name);
             }
         }
 
@@ -58,65 +103,38 @@ namespace EasyCapFrontend {
                 }
                 string filepath = Path.Combine(txtOutputDir.Text, filename);
 
-                string audio = null;
-                string video = null;
+                string audio = ddlAudio.SelectedItem?.ToString();
+                string video = ddlVideo.SelectedItem?.ToString();
+                if (audio == null || video == null) {
+                    MessageBox.Show(this, "You must select both audio and video inputs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else {
+                    var psi2 = new ProcessStartInfo(
+                        lblFfmpegPath2.Text,
+                        $"-t {numDuration.Value * 60} -f dshow -video_size 720x240 -framerate 30 " +
+                        $"-pixel_format yuyv422 -i video=\"{video}\":audio=\"{audio}\" " +
+                        $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
+                        $"\"{filepath}\""
+                    ) {
+                        UseShellExecute = false,
+                        RedirectStandardError = true
+                    };
 
-                var psi1 = new ProcessStartInfo(lblFfmpegPath2.Text, $"-f dshow -list_devices true -i dummy") {
-                    UseShellExecute = false,
-                    RedirectStandardError = true
-                };
-                var p1 = Process.Start(psi1);
-                await Task.Run(() => {
-                    using (var sr = p1.StandardError) {
-                        string line;
-                        string mode = null;
-                        while ((line = sr.ReadLine()) != null) {
-                            if (line.Contains("DirectShow video devices")) {
-                                mode = "video";
-                            } else if (line.Contains("DirectShow audio devices")) {
-                                mode = "audio";
-                            } else if (line.Contains("USB Video Device") || line.Contains("USB Audio Device")) {
-                                line = line.Substring(line.IndexOf('"') + 1);
-                                line = line.Substring(0, line.LastIndexOf('"'));
-                                if (line.Length > 0) {
-                                    Console.WriteLine(line);
-                                    if (mode == "video") video = line;
-                                    if (mode == "audio") audio = line;
-                                }
-                            }
-                        }
-                    }
-                    p1.WaitForExit();
-                });
+                    var ts = startTime - DateTime.Now;
+                    if (ts < TimeSpan.Zero) ts = TimeSpan.Zero;
 
-                var psi2 = new ProcessStartInfo(
-                    lblFfmpegPath2.Text,
-                    $"-t {numDuration.Value * 60} -f dshow -video_size 720x240 -framerate 30 " +
-                    $"-pixel_format yuyv422 -i video=\"{video}\":audio=\"{audio}\" " +
-                    $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
-                    $"\"{filepath}\""
-                ) {
-                    UseShellExecute = false,
-                    RedirectStandardError = true
-                };
+                    await Task.Delay(ts);
 
-                var ts = startTime - DateTime.Now;
-                if (ts < TimeSpan.Zero) ts = TimeSpan.Zero;
+                    if (File.Exists(filepath)) File.Delete(filepath);
 
-                await Task.Delay(ts);
-
-                if (File.Exists(filepath)) File.Delete(filepath);
-
-                var p2 = Process.Start(psi2);
-                await Task.Run(() => {
+                    var p2 = Process.Start(psi2);
                     using (var sr = p2.StandardError) {
                         string line;
-                        while ((line = sr.ReadLine()) != null) {
+                        while ((line = await sr.ReadLineAsync()) != null) {
                             Console.Error.WriteLine(line);
                         }
                     }
                     p2.WaitForExit();
-                });
+                }
             } catch (Exception ex) {
                 Console.Error.WriteLine(ex.Message + ex.StackTrace);
                 MessageBox.Show(this, ex.Message);
