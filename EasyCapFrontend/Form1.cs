@@ -181,5 +181,15 @@ namespace EasyCapFrontend {
         private void btnStop_Click(object sender, EventArgs e) {
             ffmpeg?.StandardInput?.WriteLine("q");
         }
+
+        private void btnOpenDir_Click(object sender, EventArgs e) {
+            if (Directory.Exists(txtOutputDir.Text)) {
+                Process.Start(txtOutputDir.Text);
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Process.Start(linkLabel1.Text);
+        }
     }
 }
