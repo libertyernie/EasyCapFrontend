@@ -73,7 +73,7 @@ namespace EasyCapFrontend {
                                 if (mode == "video") {
                                     ddlVideo.Items.Add(line);
                                     if (line.Contains("USB Video Device")) {
-                                        ddlVideo.SelectedIndex = ddlAudio.Items.Count - 1;
+                                        ddlVideo.SelectedIndex = ddlVideo.Items.Count - 1;
                                     }
                                 }
                             }
