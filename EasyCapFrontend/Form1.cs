@@ -13,6 +13,9 @@ using System.Windows.Forms;
 
 namespace EasyCapFrontend {
     public partial class Form1 : Form {
+        private static string INPUT_OPTIONS = "-framerate 30 -video_size 720x240 -pixel_format yuyv422";
+        private Process ffmpeg = null;
+
         public Form1() {
             InitializeComponent();
 
@@ -52,7 +55,7 @@ namespace EasyCapFrontend {
                 using (var sr = p1.StandardError) {
                     string line;
                     string mode = null;
-                    while ((line = sr.ReadLine()) != null) {
+                    while ((line = await sr.ReadLineAsync()) != null) {
                         if (line.Contains("DirectShow video devices")) {
                             mode = "video";
                         } else if (line.Contains("DirectShow audio devices")) {
@@ -81,7 +84,7 @@ namespace EasyCapFrontend {
             } catch (Exception e) {
                 Console.Error.WriteLine(e.Message);
                 Console.Error.WriteLine(e.StackTrace);
-                MessageBox.Show(this, e.Message, e.GetType().Name);
+                MessageBox.Show(this, e.Message, e.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -90,7 +93,7 @@ namespace EasyCapFrontend {
         }
 
         private async void btnStart_Click(object sender, EventArgs e) {
-            Enabled = false;
+            btnStart.Enabled = false;
             progressBar1.Value = 0;
             progressBar1.Visible = true;
             textBox1.Clear();
@@ -105,57 +108,78 @@ namespace EasyCapFrontend {
                     filename += ".mp4";
                 }
                 string filepath = Path.Combine(txtOutputDir.Text, filename);
+                if (File.Exists(filepath)) {
+                    throw new Exception("File already exists: " + filepath);
+                }
 
                 decimal seconds = numDuration.Value * 60;
-                progressBar1.Maximum = (int)seconds;
+                progressBar1.Maximum = (int)(seconds * 1000);
 
                 string audio = ddlAudio.SelectedItem?.ToString();
                 string video = ddlVideo.SelectedItem?.ToString();
                 if (audio == null || video == null) {
                     MessageBox.Show(this, "You must select both audio and video inputs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 } else {
-                    var psi2 = new ProcessStartInfo(
-                        lblFfmpegPath2.Text,
-                        $"-t {seconds} -f dshow -framerate 30 -video_size 720x240 " +
-                        $"-pixel_format yuyv422 -i video=\"{video}\":audio=\"{audio}\" " +
-                        $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
-                        $"\"{filepath}\""
-                    ) {
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        RedirectStandardError = true
-                    };
-
-                    var ts = startTime - DateTime.Now;
-                    if (ts < TimeSpan.Zero) ts = TimeSpan.Zero;
-
-                    await Task.Delay(ts);
-
-                    if (File.Exists(filepath)) File.Delete(filepath);
-
-                    var p2 = Process.Start(psi2);
-                    using (var sr = p2.StandardError) {
-                        string line;
-                        while ((line = await sr.ReadLineAsync()) != null) {
-                            if (line.Contains("time=")) {
-                                string time = line.Substring(line.IndexOf("time=") + 5, 11);
-                                if (TimeSpan.TryParse(time, out TimeSpan result)) {
-                                    progressBar1.Value = (int)result.TotalSeconds;
-                                }
-                            } else {
-                                textBox1.AppendText(line + Environment.NewLine);
-                            }
-                        }
+                    int exitCode = await RunEncoder(startTime, seconds, INPUT_OPTIONS, video, audio, filepath);
+                    if (exitCode == 1) {
+                        await RunEncoder(startTime, seconds, "", video, audio, filepath);
                     }
-                    p2.WaitForExit();
                 }
             } catch (Exception ex) {
                 Console.Error.WriteLine(ex.Message + ex.StackTrace);
-                MessageBox.Show(this, ex.Message);
+                MessageBox.Show(this, ex.Message, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            Enabled = true;
+            btnStop.Enabled = false;
+            btnStart.Enabled = true;
             progressBar1.Visible = false;
+        }
+
+        private async Task<int> RunEncoder(DateTime startTime, decimal seconds, string input_options, string video, string audio, string filepath) {
+            var psi2 = new ProcessStartInfo(
+                        lblFfmpegPath2.Text,
+                        $"-t {seconds} -f dshow " +
+                        $"{input_options} " +
+                        $"-i video=\"{video}\":audio=\"{audio}\" " +
+                        $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
+                        $"\"{filepath}\""
+                    ) {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true
+            };
+
+            var ts = startTime - DateTime.Now;
+            if (ts < TimeSpan.Zero) ts = TimeSpan.Zero;
+
+            await Task.Delay(ts);
+
+            if (File.Exists(filepath)) File.Delete(filepath);
+
+            btnStop.Enabled = true;
+            var p2 = ffmpeg = Process.Start(psi2);
+            using (var sr = p2.StandardError) {
+                string line;
+                while ((line = await sr.ReadLineAsync()) != null) {
+                    if (line.Contains("time=")) {
+                        string time = line.Substring(line.IndexOf("time=") + 5, 11);
+                        if (TimeSpan.TryParse(time, out TimeSpan result)) {
+                            progressBar1.Value = Math.Min(progressBar1.Maximum, (int)result.TotalMilliseconds);
+                        }
+                    } else {
+                        textBox1.AppendText(line + Environment.NewLine);
+                    }
+                }
+            }
+            p2.WaitForExit();
+            ffmpeg = null;
+
+            return p2.ExitCode;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e) {
+            ffmpeg?.StandardInput?.WriteLine("q");
         }
     }
 }

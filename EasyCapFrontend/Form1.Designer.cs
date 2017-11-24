@@ -45,12 +45,13 @@
             this.txtOutputDir = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ddlVideo = new System.Windows.Forms.ComboBox();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.ddlVideo = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -102,8 +103,13 @@
             // 
             // numDuration
             // 
-            this.numDuration.DecimalPlaces = 3;
+            this.numDuration.DecimalPlaces = 2;
             this.numDuration.Location = new System.Drawing.Point(66, 47);
+            this.numDuration.Maximum = new decimal(new int[] {
+            35000,
+            0,
+            0,
+            0});
             this.numDuration.Name = "numDuration";
             this.numDuration.Size = new System.Drawing.Size(60, 20);
             this.numDuration.TabIndex = 6;
@@ -318,26 +324,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Input";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Video:";
-            // 
-            // ddlVideo
-            // 
-            this.ddlVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ddlVideo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlVideo.FormattingEnabled = true;
-            this.ddlVideo.Location = new System.Drawing.Point(49, 19);
-            this.ddlVideo.Name = "ddlVideo";
-            this.ddlVideo.Size = new System.Drawing.Size(205, 21);
-            this.ddlVideo.TabIndex = 1;
-            // 
             // ddlAudio
             // 
             this.ddlAudio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -358,6 +344,26 @@
             this.label5.TabIndex = 2;
             this.label5.Text = "Audio:";
             // 
+            // ddlVideo
+            // 
+            this.ddlVideo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ddlVideo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlVideo.FormattingEnabled = true;
+            this.ddlVideo.Location = new System.Drawing.Point(49, 19);
+            this.ddlVideo.Name = "ddlVideo";
+            this.ddlVideo.Size = new System.Drawing.Size(205, 21);
+            this.ddlVideo.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Video:";
+            // 
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -373,17 +379,31 @@
             // 
             // progressBar1
             // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.Location = new System.Drawing.Point(12, 276);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(445, 23);
+            this.progressBar1.Size = new System.Drawing.Size(364, 23);
             this.progressBar1.TabIndex = 7;
             this.progressBar1.Visible = false;
+            // 
+            // btnStop
+            // 
+            this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStop.Location = new System.Drawing.Point(382, 276);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.TabIndex = 8;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 311);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox4);
@@ -438,6 +458,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btnStop;
     }
 }
 
