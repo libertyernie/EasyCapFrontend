@@ -136,14 +136,20 @@ namespace EasyCapFrontend {
         }
 
         private async Task<int> RunEncoder(DateTime startTime, decimal seconds, string input_options, string video, string audio, string filepath) {
-            var psi2 = new ProcessStartInfo(
-                        lblFfmpegPath2.Text,
-                        $"-t {seconds} -f dshow " +
-                        $"{input_options} " +
-                        $"-i video=\"{video}\":audio=\"{audio}\" " +
-                        $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
-                        $"\"{filepath}\""
-                    ) {
+            string args = $"-t {seconds} -f dshow " +
+                $"{input_options} " +
+                $"-i video=\"{video}\":audio=\"{audio}\" " +
+                $"-f mp4 -pix_fmt yuv420p -s 720x540 -c:v libx264 -preset {ddlPreset.Text} -crf {(int)numCrf.Value} -c:a libmp3lame -qscale:a 0 " +
+                $"\"{filepath}\"";
+
+            textBox1.AppendText("----------------------------------------");
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText(lblFfmpegPath2.Text + " " + args);
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText("----------------------------------------");
+            textBox1.AppendText(Environment.NewLine);
+
+            var psi2 = new ProcessStartInfo(lblFfmpegPath2.Text, args) {
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardError = true,
