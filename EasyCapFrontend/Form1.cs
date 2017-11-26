@@ -117,65 +117,21 @@ namespace EasyCapFrontend {
             progressBar1.Visible = false;
         }
 
-        private async void btnPreview_Click(object sender, EventArgs e) {
-            btnStart.Enabled = btnPreview.Enabled = false;
-            progressBar1.Value = 0;
-            progressBar1.Visible = true;
+        private void btnPreview_Click(object sender, EventArgs e) {
             textBox1.Clear();
 
-            try {
-                string audio = ddlAudio.SelectedItem?.ToString();
-                string video = ddlVideo.SelectedItem?.ToString();
-                if (audio == null || video == null) {
-                    MessageBox.Show(this, "You must select both audio and video inputs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                } else {
-                    int exitCode = await Preview(INPUT_OPTIONS, video, audio);
-                    if (exitCode == 1) {
-                        await Preview("", video, audio);
-                    }
-                }
-            } catch (Exception ex) {
-                Console.Error.WriteLine(ex.Message + ex.StackTrace);
-                MessageBox.Show(this, ex.Message, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            btnStart.Enabled = btnPreview.Enabled = true;
-            progressBar1.Visible = false;
-        }
-
-        private async Task<int> Preview(string input_options, string video, string audio) {
+            string audio = ddlAudio.SelectedItem?.ToString();
+            string video = ddlVideo.SelectedItem?.ToString();
             string args = $"-f dshow " +
-                $"{input_options} " +
+                $"{INPUT_OPTIONS} " +
                 $"-i video=\"{video}\":audio=\"{audio}\" " +
                 $"-vf scale=720x540";
-
-            textBox1.AppendText("----------------------------------------");
-            textBox1.AppendText(Environment.NewLine);
+            
             textBox1.AppendText("ffplay " + args);
-            textBox1.AppendText(Environment.NewLine);
-            textBox1.AppendText("----------------------------------------");
-            textBox1.AppendText(Environment.NewLine);
 
-            var psi2 = new ProcessStartInfo("ffplay", args) {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true
-            };
+            var psi2 = new ProcessStartInfo("ffplay", args);
 
-            btnStop.Enabled = true;
-            var p2 = ffmpeg = Process.Start(psi2);
-            using (var sr = p2.StandardError) {
-                string line;
-                while ((line = await sr.ReadLineAsync()) != null) {
-                    textBox1.AppendText(line + Environment.NewLine);
-                }
-            }
-            p2.WaitForExit();
-            btnStop.Enabled = false;
-            ffmpeg = null;
-
-            return p2.ExitCode;
+            Process.Start(psi2);
         }
 
         private async Task<int> RunEncoder(DateTime startTime, decimal seconds, string input_options, string video, string audio, string filepath) {
