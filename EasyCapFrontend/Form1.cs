@@ -18,36 +18,19 @@ namespace EasyCapFrontend {
 
         public Form1() {
             InitializeComponent();
-
-            Enabled = false;
+            
             chkImmediate.Checked = true;
             ddlPreset.SelectedIndex = ddlPreset.Items.IndexOf("slow");
 
             txtOutputDir.Text = Environment.CurrentDirectory;
             txtFilename.Text = DateTime.UtcNow.ToString("u").Replace(':', '-').Replace(' ', '_');
 
-            foreach (string path in new[] {
-                Environment.CurrentDirectory,
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-            }.Concat(Environment.GetEnvironmentVariable("PATH").Split(Path.PathSeparator))) {
-                string p = path;
-                while (p.EndsWith("\"")) {
-                    p = path.Substring(0, path.Length - 1);
-                }
-                string f = Path.Combine(p, "ffmpeg.exe");
-                if (File.Exists(f)) {
-                    lblFfmpegPath2.Text = f;
-                    Enabled = true;
-                    break;
-                }
-            }
-
             FillDevices();
         }
 
         private async void FillDevices() {
             try {
-                var psi1 = new ProcessStartInfo(lblFfmpegPath2.Text, $"-f dshow -list_devices true -i dummy") {
+                var psi1 = new ProcessStartInfo("ffmpeg", $"-f dshow -list_devices true -i dummy") {
                     UseShellExecute = false,
                     RedirectStandardError = true
                 };
@@ -93,7 +76,7 @@ namespace EasyCapFrontend {
         }
 
         private async void btnStart_Click(object sender, EventArgs e) {
-            btnStart.Enabled = false;
+            btnStart.Enabled = btnPreview.Enabled = false;
             progressBar1.Value = 0;
             progressBar1.Visible = true;
             textBox1.Clear();
@@ -130,9 +113,69 @@ namespace EasyCapFrontend {
                 MessageBox.Show(this, ex.Message, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            btnStop.Enabled = false;
-            btnStart.Enabled = true;
+            btnStart.Enabled = btnPreview.Enabled = true;
             progressBar1.Visible = false;
+        }
+
+        private async void btnPreview_Click(object sender, EventArgs e) {
+            btnStart.Enabled = btnPreview.Enabled = false;
+            progressBar1.Value = 0;
+            progressBar1.Visible = true;
+            textBox1.Clear();
+
+            try {
+                string audio = ddlAudio.SelectedItem?.ToString();
+                string video = ddlVideo.SelectedItem?.ToString();
+                if (audio == null || video == null) {
+                    MessageBox.Show(this, "You must select both audio and video inputs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else {
+                    int exitCode = await Preview(INPUT_OPTIONS, video, audio);
+                    if (exitCode == 1) {
+                        await Preview("", video, audio);
+                    }
+                }
+            } catch (Exception ex) {
+                Console.Error.WriteLine(ex.Message + ex.StackTrace);
+                MessageBox.Show(this, ex.Message, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            btnStart.Enabled = btnPreview.Enabled = true;
+            progressBar1.Visible = false;
+        }
+
+        private async Task<int> Preview(string input_options, string video, string audio) {
+            string args = $"-f dshow " +
+                $"{input_options} " +
+                $"-i video=\"{video}\":audio=\"{audio}\" " +
+                $"-vf scale=720x540";
+
+            textBox1.AppendText("----------------------------------------");
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText("ffplay " + args);
+            textBox1.AppendText(Environment.NewLine);
+            textBox1.AppendText("----------------------------------------");
+            textBox1.AppendText(Environment.NewLine);
+
+            var psi2 = new ProcessStartInfo("ffplay", args) {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true
+            };
+
+            btnStop.Enabled = true;
+            var p2 = ffmpeg = Process.Start(psi2);
+            using (var sr = p2.StandardError) {
+                string line;
+                while ((line = await sr.ReadLineAsync()) != null) {
+                    textBox1.AppendText(line + Environment.NewLine);
+                }
+            }
+            p2.WaitForExit();
+            btnStop.Enabled = false;
+            ffmpeg = null;
+
+            return p2.ExitCode;
         }
 
         private async Task<int> RunEncoder(DateTime startTime, decimal seconds, string input_options, string video, string audio, string filepath) {
@@ -144,12 +187,12 @@ namespace EasyCapFrontend {
 
             textBox1.AppendText("----------------------------------------");
             textBox1.AppendText(Environment.NewLine);
-            textBox1.AppendText(lblFfmpegPath2.Text + " " + args);
+            textBox1.AppendText("ffmpeg " + args);
             textBox1.AppendText(Environment.NewLine);
             textBox1.AppendText("----------------------------------------");
             textBox1.AppendText(Environment.NewLine);
 
-            var psi2 = new ProcessStartInfo(lblFfmpegPath2.Text, args) {
+            var psi2 = new ProcessStartInfo("ffmpeg", args) {
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardError = true,
@@ -179,6 +222,7 @@ namespace EasyCapFrontend {
                 }
             }
             p2.WaitForExit();
+            btnStop.Enabled = false;
             ffmpeg = null;
 
             return p2.ExitCode;

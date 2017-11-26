@@ -38,8 +38,8 @@
             this.numCrf = new System.Windows.Forms.NumericUpDown();
             this.lblCRF = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
-            this.lblFfmpegPath2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnOpenDir = new System.Windows.Forms.Button();
             this.txtFilename = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtOutputDir = new System.Windows.Forms.TextBox();
@@ -52,8 +52,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btnStop = new System.Windows.Forms.Button();
-            this.btnOpenDir = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnPreview = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -125,10 +125,10 @@
             this.groupBox1.Controls.Add(this.chkImmediate);
             this.groupBox1.Controls.Add(this.lblDuration);
             this.groupBox1.Controls.Add(this.dtStartTime);
-            this.groupBox1.Location = new System.Drawing.Point(12, 25);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(260, 73);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
             // 
@@ -150,7 +150,7 @@
             this.groupBox3.Controls.Add(this.lblPreset);
             this.groupBox3.Controls.Add(this.numCrf);
             this.groupBox3.Controls.Add(this.lblCRF);
-            this.groupBox3.Location = new System.Drawing.Point(12, 102);
+            this.groupBox3.Location = new System.Drawing.Point(12, 89);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(260, 73);
             this.groupBox3.TabIndex = 2;
@@ -243,22 +243,10 @@
             this.btnStart.Location = new System.Drawing.Point(463, 276);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 5;
+            this.btnStart.TabIndex = 9;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // lblFfmpegPath2
-            // 
-            this.lblFfmpegPath2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFfmpegPath2.AutoEllipsis = true;
-            this.lblFfmpegPath2.Location = new System.Drawing.Point(12, 9);
-            this.lblFfmpegPath2.Name = "lblFfmpegPath2";
-            this.lblFfmpegPath2.Size = new System.Drawing.Size(526, 13);
-            this.lblFfmpegPath2.TabIndex = 0;
-            this.lblFfmpegPath2.Text = "not found";
-            this.lblFfmpegPath2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox2
             // 
@@ -269,12 +257,23 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txtOutputDir);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(278, 104);
+            this.groupBox2.Location = new System.Drawing.Point(278, 91);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(260, 71);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Output";
+            // 
+            // btnOpenDir
+            // 
+            this.btnOpenDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenDir.Location = new System.Drawing.Point(234, 19);
+            this.btnOpenDir.Name = "btnOpenDir";
+            this.btnOpenDir.Size = new System.Drawing.Size(20, 20);
+            this.btnOpenDir.TabIndex = 4;
+            this.btnOpenDir.Text = "↗";
+            this.btnOpenDir.UseVisualStyleBackColor = true;
+            this.btnOpenDir.Click += new System.EventHandler(this.btnOpenDir_Click);
             // 
             // txtFilename
             // 
@@ -320,10 +319,10 @@
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.ddlVideo);
             this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Location = new System.Drawing.Point(278, 25);
+            this.groupBox4.Location = new System.Drawing.Point(278, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(260, 73);
-            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Input";
             // 
@@ -372,13 +371,13 @@
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 181);
+            this.textBox1.Location = new System.Drawing.Point(12, 168);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(526, 89);
-            this.textBox1.TabIndex = 6;
+            this.textBox1.Size = new System.Drawing.Size(526, 102);
+            this.textBox1.TabIndex = 4;
             // 
             // progressBar1
             // 
@@ -386,8 +385,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.Location = new System.Drawing.Point(12, 276);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(364, 23);
-            this.progressBar1.TabIndex = 7;
+            this.progressBar1.Size = new System.Drawing.Size(283, 23);
+            this.progressBar1.TabIndex = 5;
             this.progressBar1.Visible = false;
             // 
             // btnStop
@@ -401,39 +400,39 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // btnOpenDir
-            // 
-            this.btnOpenDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenDir.Location = new System.Drawing.Point(234, 19);
-            this.btnOpenDir.Name = "btnOpenDir";
-            this.btnOpenDir.Size = new System.Drawing.Size(20, 20);
-            this.btnOpenDir.TabIndex = 4;
-            this.btnOpenDir.Text = "↗";
-            this.btnOpenDir.UseVisualStyleBackColor = true;
-            this.btnOpenDir.Click += new System.EventHandler(this.btnOpenDir_Click);
-            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(18, 281);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(239, 13);
-            this.linkLabel1.TabIndex = 9;
+            this.linkLabel1.TabIndex = 6;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "https://github.com/libertyernie/EasyCapFrontend";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // btnPreview
+            // 
+            this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPreview.Location = new System.Drawing.Point(301, 276);
+            this.btnPreview.Name = "btnPreview";
+            this.btnPreview.Size = new System.Drawing.Size(75, 23);
+            this.btnPreview.TabIndex = 7;
+            this.btnPreview.Text = "Preview";
+            this.btnPreview.UseVisualStyleBackColor = true;
+            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 311);
+            this.Controls.Add(this.btnPreview);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.lblFfmpegPath2);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -470,7 +469,6 @@
         private System.Windows.Forms.ComboBox ddlTune;
         private System.Windows.Forms.Label lblTune;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Label lblFfmpegPath2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
@@ -487,6 +485,7 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnOpenDir;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button btnPreview;
     }
 }
 
